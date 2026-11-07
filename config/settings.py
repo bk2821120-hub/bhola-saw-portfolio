@@ -14,8 +14,8 @@ env = environ.Env(
 )
 environ.Env.read_env(BASE_DIR / '.env')
 
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-bhola-portfolio-production-secret-key-2026')
+DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 if '*' not in ALLOWED_HOSTS and 'testserver' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS += ['testserver', 'localhost', '127.0.0.1']
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,8 +77,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database Configuration (MySQL by default, switchable to SQLite for instant local dev)
-DB_ENGINE = env('DB_ENGINE', default='mysql')
+# Database Configuration (SQLite by default for zero-config hosting, switchable to MySQL)
+DB_ENGINE = env('DB_ENGINE', default='sqlite')
 
 if DB_ENGINE == 'sqlite':
     DATABASES = {
@@ -120,6 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/media/'
