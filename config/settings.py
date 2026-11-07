@@ -20,9 +20,10 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 if '*' not in ALLOWED_HOSTS and 'testserver' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS += ['testserver', 'localhost', '127.0.0.1']
 
-# CSRF Trusted Origins for Render and custom domains
+# CSRF Trusted Origins for Render, Vercel, and custom domains
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
     'https://*.onrender.com',
+    'https://*.vercel.app',
     'http://localhost',
     'http://127.0.0.1',
 ])
@@ -122,12 +123,21 @@ elif DB_ENGINE == 'mysql':
         }
     }
 else:
-    # 3. SQLite with Render Persistent Storage support (/var/data or DATA_DIR)
+    # 3. SQLite with Render Persistent Storage (/var/data), Vercel (/tmp), or local BASE_DIR
+    import os
+    import shutil
     env_data_dir = env('DATA_DIR', default='')
     if env_data_dir:
         DATA_DIR = Path(env_data_dir)
     elif Path('/var/data').is_dir():
         DATA_DIR = Path('/var/data')
+    elif os.environ.get('VERCEL'):
+        DATA_DIR = Path('/tmp')
+        if not (DATA_DIR / 'db.sqlite3').exists() and (BASE_DIR / 'db.sqlite3').exists():
+            try:
+                shutil.copy(BASE_DIR / 'db.sqlite3', DATA_DIR / 'db.sqlite3')
+            except Exception:
+                pass
     else:
         DATA_DIR = BASE_DIR
 
@@ -159,12 +169,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Media files (Render Persistent Storage support or local BASE_DIR/media)
+# Media files (Render Persistent Storage, Vercel /tmp, or local BASE_DIR/media)
 env_data_dir = env('DATA_DIR', default='')
 if env_data_dir:
     MEDIA_ROOT = Path(env_data_dir) / 'media'
 elif Path('/var/data').is_dir():
     MEDIA_ROOT = Path('/var/data/media')
+elif os.environ.get('VERCEL'):
+    MEDIA_ROOT = Path('/tmp/media')
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
 
