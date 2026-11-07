@@ -20,8 +20,9 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 if '*' not in ALLOWED_HOSTS and 'testserver' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS += ['testserver', 'localhost', '127.0.0.1']
 
-# CSRF Trusted Origins for Render, Vercel, and custom domains
+# CSRF Trusted Origins for Koyeb, Render, Vercel, and custom domains
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+    'https://*.koyeb.app',
     'https://*.onrender.com',
     'https://*.vercel.app',
     'http://localhost',
