@@ -1,0 +1,148 @@
+<!-- Skills Form -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">{{ page_title }}</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'skills:list' %}">Skills</a> / {{ page_title }}</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="admin-form-label">Skill Name</label>
+          {{ form.name }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Category</label>
+          {{ form.category }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Proficiency Level</label>
+          {{ form.level }}
+        </div>
+        <div class="col-md-5">
+          <label class="admin-form-label">Bootstrap Icon</label>
+          <div class="input-group">
+            <span class="input-group-text icon-preview-box" id="icon-preview" title="Live Icon Preview">
+              <i class="bi {{ form.icon.value|default:'bi-check2-circle' }}"></i>
+            </span>
+            {{ form.icon }}
+            <button type="button" class="btn icon-browse-btn" data-bs-toggle="modal" data-bs-target="#iconPickerModal" title="Open icon selector modal">
+              <i class="bi bi-grid-3x3-gap"></i> Browse
+            </button>
+          </div>
+          <div class="icon-detected-badge" style="display:none;"></div>
+        </div>
+        <div class="col-md-2">
+          <label class="admin-form-label">Display Order</label>
+          {{ form.display_order }}
+        </div>
+        <div class="col-md-2 d-flex align-items-center pt-4">
+          <div class="form-check">
+            {{ form.active }}
+            <label class="form-check-label ms-2" for="id_active">Active</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Short Description / Usage Context (Optional)</label>
+          {{ form.description }}
+        </div>
+        <div class="col-12 mt-4 d-flex gap-2">
+          <button type="submit" class="admin-btn admin-btn-primary"><i class="bi bi-save me-1"></i> Save Skill</button>
+          <a href="{% url 'skills:list' %}" class="admin-btn admin-btn-outline">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Bootstrap Icon Picker Modal -->
+<div class="modal fade" id="iconPickerModal" tabindex="-1" aria-labelledby="iconPickerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered icon-modal-dialog">
+    <div class="modal-content icon-modal-content">
+      <div class="modal-header icon-modal-header">
+        <h5 class="modal-title fs-6 fw-bold" id="iconPickerModalLabel">
+          <i class="bi bi-grid-3x3-gap text-primary me-2"></i>Select a Bootstrap Icon
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body icon-modal-body">
+        <div class="icon-modal-search">
+          <div class="input-group">
+            <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" id="iconModalSearch" placeholder="Search icon (e.g. python, code, database, cloud, robot)..." autocomplete="off">
+          </div>
+        </div>
+        <div class="icon-picker-grid">
+          <!-- Tech / Programming -->
+          <div class="icon-picker-item" data-icon="bi-filetype-py" data-name="python filetype-py py"><i class="bi bi-filetype-py"></i><span class="icon-picker-item-name">Python</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-js" data-name="javascript js"><i class="bi bi-filetype-js"></i><span class="icon-picker-item-name">JavaScript</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-html" data-name="html html5"><i class="bi bi-filetype-html"></i><span class="icon-picker-item-name">HTML5</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-css" data-name="css css3"><i class="bi bi-filetype-css"></i><span class="icon-picker-item-name">CSS3</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-json" data-name="json"><i class="bi bi-filetype-json"></i><span class="icon-picker-item-name">JSON</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-sql" data-name="sql filetype-sql"><i class="bi bi-filetype-sql"></i><span class="icon-picker-item-name">SQL File</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-java" data-name="java"><i class="bi bi-filetype-java"></i><span class="icon-picker-item-name">Java</span></div>
+          <div class="icon-picker-item" data-icon="bi-filetype-cs" data-name="csharp c#"><i class="bi bi-filetype-cs"></i><span class="icon-picker-item-name">C#</span></div>
+
+          <!-- Code & Frameworks -->
+          <div class="icon-picker-item" data-icon="bi-code-slash" data-name="code programming syntax"><i class="bi bi-code-slash"></i><span class="icon-picker-item-name">Code</span></div>
+          <div class="icon-picker-item" data-icon="bi-code-square" data-name="code square ide editor"><i class="bi bi-code-square"></i><span class="icon-picker-item-name">Code Sq</span></div>
+          <div class="icon-picker-item" data-icon="bi-braces" data-name="braces react javascript code"><i class="bi bi-braces"></i><span class="icon-picker-item-name">Braces</span></div>
+          <div class="icon-picker-item" data-icon="bi-braces-asterisk" data-name="regex syntax braces"><i class="bi bi-braces-asterisk"></i><span class="icon-picker-item-name">Regex</span></div>
+          <div class="icon-picker-item" data-icon="bi-terminal" data-name="terminal bash shell cli"><i class="bi bi-terminal"></i><span class="icon-picker-item-name">Terminal</span></div>
+          <div class="icon-picker-item" data-icon="bi-terminal-fill" data-name="terminal console command"><i class="bi bi-terminal-fill"></i><span class="icon-picker-item-name">Terminal Fill</span></div>
+          <div class="icon-picker-item" data-icon="bi-bootstrap" data-name="bootstrap css ui"><i class="bi bi-bootstrap"></i><span class="icon-picker-item-name">Bootstrap</span></div>
+          <div class="icon-picker-item" data-icon="bi-hdd-network" data-name="django server backend fullstack"><i class="bi bi-hdd-network"></i><span class="icon-picker-item-name">Server/Django</span></div>
+
+          <!-- Database -->
+          <div class="icon-picker-item" data-icon="bi-database" data-name="database mysql postgres sql"><i class="bi bi-database"></i><span class="icon-picker-item-name">Database</span></div>
+          <div class="icon-picker-item" data-icon="bi-database-fill-gear" data-name="mysql db administration"><i class="bi bi-database-fill-gear"></i><span class="icon-picker-item-name">DB Config</span></div>
+          <div class="icon-picker-item" data-icon="bi-database-check" data-name="database check postgres"><i class="bi bi-database-check"></i><span class="icon-picker-item-name">DB Check</span></div>
+          <div class="icon-picker-item" data-icon="bi-table" data-name="table dataset dataframe pandas"><i class="bi bi-table"></i><span class="icon-picker-item-name">Table/Data</span></div>
+          <div class="icon-picker-item" data-icon="bi-graph-up" data-name="data analytics visualization pandas"><i class="bi bi-graph-up"></i><span class="icon-picker-item-name">Analytics</span></div>
+
+          <!-- AI / ML -->
+          <div class="icon-picker-item" data-icon="bi-cpu" data-name="cpu machine learning hardware ai"><i class="bi bi-cpu"></i><span class="icon-picker-item-name">Machine Learning</span></div>
+          <div class="icon-picker-item" data-icon="bi-robot" data-name="robot nlp llm gpt transformers"><i class="bi bi-robot"></i><span class="icon-picker-item-name">NLP / AI</span></div>
+          <div class="icon-picker-item" data-icon="bi-lightning-charge" data-name="lightning pytorch fast deep learning"><i class="bi bi-lightning-charge"></i><span class="icon-picker-item-name">Deep Learning</span></div>
+          <div class="icon-picker-item" data-icon="bi-diagram-3" data-name="diagram neural network architecture"><i class="bi bi-diagram-3"></i><span class="icon-picker-item-name">Architecture</span></div>
+          <div class="icon-picker-item" data-icon="bi-boxes" data-name="boxes neural pipeline"><i class="bi bi-boxes"></i><span class="icon-picker-item-name">Pipelines</span></div>
+
+          <!-- Tools & Cloud -->
+          <div class="icon-picker-item" data-icon="bi-github" data-name="github git version control"><i class="bi bi-github"></i><span class="icon-picker-item-name">Git/GitHub</span></div>
+          <div class="icon-picker-item" data-icon="bi-git" data-name="git vcs"><i class="bi bi-git"></i><span class="icon-picker-item-name">Git</span></div>
+          <div class="icon-picker-item" data-icon="bi-box-seam" data-name="docker container devops kubernetes"><i class="bi bi-box-seam"></i><span class="icon-picker-item-name">Docker</span></div>
+          <div class="icon-picker-item" data-icon="bi-cloud" data-name="cloud aws azure gcp"><i class="bi bi-cloud"></i><span class="icon-picker-item-name">Cloud</span></div>
+          <div class="icon-picker-item" data-icon="bi-gear-wide-connected" data-name="rest api microservices"><i class="bi bi-gear-wide-connected"></i><span class="icon-picker-item-name">REST APIs</span></div>
+          <div class="icon-picker-item" data-icon="bi-shield-check" data-name="security auth oauth"><i class="bi bi-shield-check"></i><span class="icon-picker-item-name">Security</span></div>
+          <div class="icon-picker-item" data-icon="bi-tools" data-name="tools maintenance"><i class="bi bi-tools"></i><span class="icon-picker-item-name">Tools</span></div>
+          <div class="icon-picker-item" data-icon="bi-check2-circle" data-name="check testing qa"><i class="bi bi-check2-circle"></i><span class="icon-picker-item-name">Testing</span></div>
+        </div>
+      </div>
+      <div class="modal-footer border-top border-secondary py-2 justify-content-between">
+        <a href="https://icons.getbootstrap.com/" target="_blank" class="small text-info text-decoration-none">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View all Bootstrap icons
+        </a>
+        <button type="button" class="admin-btn admin-btn-outline" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<!-- Profile Form -->
+{% extends 'admin_panel/base.html' %}
+
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Profile Information</h1>
+    <div class="admin-breadcrumb">Edit personal details, bio, and hero information</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="admin-form-label">Full Name</label>
+          {{ form.name }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Professional Title</label>
+          {{ form.professional_title }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Short Introduction (Hero Tagline)</label>
+          {{ form.short_intro }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Current Focus</label>
+          {{ form.current_focus }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">Years of Experience</label>
+          {{ form.years_of_experience }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">Location</label>
+          {{ form.location }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Email</label>
+          {{ form.email }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Phone</label>
+          {{ form.phone }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Detailed Bio / About Me</label>
+          {{ form.bio }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Career Objective</label>
+          {{ form.career_objective }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Profile Photo</label>
+          {{ form.photo }}
+          {% if profile and profile.photo %}
+            <div class="mt-2">
+              <img src="{{ profile.photo.url }}" alt="Profile Photo" height="80" class="rounded border">
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Resume Tagline</label>
+          {{ form.resume_tagline }}
+        </div>
+        <div class="col-12 mt-4">
+          <button type="submit" class="admin-btn admin-btn-primary">
+            <i class="bi bi-save me-1"></i> Save Profile
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

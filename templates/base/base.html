@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}{% if site_settings %}{{ site_settings.seo_description }}{% endif %}{% endblock %}">
+
+  <title>{% block title %}{% if site_settings %}{{ site_settings.site_name }}{% else %}Portfolio{% endif %}{% endblock %}</title>
+
+  {% if site_settings and site_settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ site_settings.favicon.url }}">
+  {% else %}
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+  {% endif %}
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Portfolio CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+  {% if site_settings %}
+  <style>
+    :root {
+      {% if site_settings.primary_color %}
+      --primary: {{ site_settings.primary_color }};
+      --border-glow: {{ site_settings.primary_color }}55;
+      --shadow-glow: 0 0 40px {{ site_settings.primary_color }}33;
+      {% endif %}
+      {% if site_settings.secondary_color %}
+      --secondary: {{ site_settings.secondary_color }};
+      {% endif %}
+      {% if site_settings.primary_color and site_settings.secondary_color %}
+      --gradient-1: linear-gradient(135deg, {{ site_settings.primary_color }} 0%, {{ site_settings.secondary_color }} 50%, #06b6d4 100%);
+      --gradient-hero: linear-gradient(135deg, {{ site_settings.primary_color }}26 0%, {{ site_settings.secondary_color }}14 50%, rgba(6,182,212,0.05) 100%);
+      {% endif %}
+    }
+  </style>
+  {% endif %}
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Django Messages -->
+  {% if messages %}
+  <div class="alert-container">
+    {% for message in messages %}
+    <div class="alert-toast {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+      <i class="bi {% if message.tags == 'error' %}bi-x-circle{% elif message.tags == 'success' %}bi-check-circle{% elif message.tags == 'warning' %}bi-exclamation-triangle{% else %}bi-info-circle{% endif %}"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Navbar -->
+  {% include 'components/navbar.html' %}
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  {% include 'components/footer.html' %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/animations.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

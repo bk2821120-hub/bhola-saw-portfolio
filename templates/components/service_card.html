@@ -1,0 +1,39 @@
+<!-- Service Card Component -->
+<div class="service-card reveal h-100 d-flex flex-column">
+  <div class="service-card-header d-flex align-items-center justify-content-between mb-3">
+    <div class="service-icon-wrap">
+      <i class="bi {{ service.icon|default:'bi-briefcase' }}"></i>
+    </div>
+    {% if service.starting_price %}
+      <span class="service-price-badge">{{ service.starting_price }}</span>
+    {% endif %}
+  </div>
+
+  <h3 class="service-card-title">{{ service.title }}</h3>
+  <p class="service-card-desc text-secondary mb-4">{{ service.short_description }}</p>
+
+  {% if service.deliverables_list %}
+    <div class="service-deliverables mb-4">
+      <div class="service-deliverables-heading">Deliverables:</div>
+      <ul class="service-deliverables-list list-unstyled mb-0">
+        {% for d in service.deliverables_list %}
+          <li><i class="bi bi-check2-circle text-primary me-2"></i><span>{{ d }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if service.technologies_list %}
+    <div class="service-tech-tags mb-4">
+      {% for tech in service.technologies_list %}
+        <span class="tech-tag">{{ tech }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="service-card-footer mt-auto pt-3 border-top border-secondary border-opacity-25">
+    <a href="{% url 'public:contact' %}?service={{ service.slug }}" class="btn-primary-custom w-100 justify-content-center">
+      <i class="bi bi-chat-dots-fill me-1"></i> Enquire Now
+    </a>
+  </div>
+</div>

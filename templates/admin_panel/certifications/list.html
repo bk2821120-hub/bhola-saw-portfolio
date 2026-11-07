@@ -1,0 +1,49 @@
+﻿<!-- Certifications List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Certifications</h1>
+    <div class="admin-breadcrumb">Licenses, badges, and verified course credentials</div>
+  </div>
+  <a href="{% url 'certifications:add' %}" class="admin-btn admin-btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Certificate</a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Certificate Name</th>
+          <th>Issuing Org</th>
+          <th>Issue Date</th>
+          <th>Credential ID</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cert in items %}
+        <tr>
+          <td class="fw-bold"><i class="bi bi-patch-check-fill text-success me-1"></i> {{ cert.name }}</td>
+          <td>{{ cert.organization }}</td>
+          <td><code>{{ cert.issue_date|date:"M Y"|default:'—' }}</code></td>
+          <td><span class="small text-muted">{{ cert.credential_id|default:'—' }}</span></td>
+          <td>
+            <a href="{% url 'certifications:toggle' cert.pk %}" class="text-decoration-none">
+              {% if cert.active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Hidden</span>{% endif %}
+            </a>
+          </td>
+          <td class="text-end">
+            <a href="{% url 'certifications:edit' cert.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'certifications:delete' cert.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No certifications added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

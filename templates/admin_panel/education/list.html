@@ -1,0 +1,45 @@
+﻿<!-- Education List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Education Records</h1>
+    <div class="admin-breadcrumb">Academic background, degrees, and institutions</div>
+  </div>
+  <a href="{% url 'education:add' %}" class="admin-btn admin-btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Education</a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Degree</th>
+          <th>Institution</th>
+          <th>Years</th>
+          <th>Result</th>
+          <th>Order</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for edu in items %}
+        <tr>
+          <td class="fw-bold">{{ edu.degree }}</td>
+          <td>{{ edu.institution }}</td>
+          <td><code>{{ edu.duration }}</code></td>
+          <td><span class="badge bg-secondary">{{ edu.result|default:'—' }}</span></td>
+          <td>{{ edu.display_order }}</td>
+          <td class="text-end">
+            <a href="{% url 'education:edit' edu.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'education:delete' edu.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No education records added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

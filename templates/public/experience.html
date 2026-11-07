@@ -1,0 +1,28 @@
+﻿<!-- Experience Page -->
+{% extends 'base/base.html' %}
+{% block title %}Work Experience | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Career History</span>
+    <h1 class="page-hero-title">Work Experience</h1>
+    <p class="page-hero-sub">Positions, responsibilities, and industry impact</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="timeline" style="max-width: 800px; margin: 0 auto;">
+      {% for exp in experiences %}
+        {% include 'components/experience_item.html' with exp=exp %}
+      {% empty %}
+        <div class="text-center text-muted py-5">
+          <i class="bi bi-briefcase fs-1 d-block mb-3"></i>
+          <p>No experience records added yet.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

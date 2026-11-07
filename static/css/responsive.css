@@ -1,0 +1,50 @@
+﻿/* ============================================================
+   Portfolio CMS — Responsive Stylesheet
+   ============================================================ */
+
+/* -- Tablet (= 992px) --------------------------------------- */
+@media (max-width: 992px) {
+  .section-pad { padding: 70px 0; }
+  .hero-section { min-height: auto; padding: 100px 0 80px; }
+  .hero-name { letter-spacing: -1px; }
+  .hero-buttons { justify-content: flex-start; }
+  .hero-image-wrap { margin-top: 3rem; }
+  .hero-image-ring-1 { width: 260px; height: 260px; }
+  .hero-image-ring-2 { width: 220px; height: 220px; }
+  .hero-img, .hero-img-placeholder { width: 200px; height: 200px; }
+  .timeline { padding-left: 1.8rem; }
+  .timeline-dot { left: -2.2rem; }
+  .contact-card { padding: 2rem; }
+}
+
+/* -- Mobile (= 768px) --------------------------------------- */
+@media (max-width: 768px) {
+  .section-pad { padding: 60px 0; }
+  .hero-section { padding: 80px 0 60px; text-align: center; }
+  .hero-buttons { justify-content: center; }
+  .hero-social { justify-content: center; }
+  .hero-intro { margin: 0 auto 1rem; }
+  .hero-focus { margin: 0 auto 2rem; }
+  .hero-image-wrap { margin-top: 2.5rem; }
+  .hero-image-ring-1 { width: 230px; height: 230px; }
+  .hero-image-ring-2 { width: 190px; height: 190px; }
+  .hero-img, .hero-img-placeholder { width: 170px; height: 170px; }
+  .skill-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  .timeline-header { flex-direction: column; }
+  .contact-card { padding: 1.5rem; }
+  .section-title { font-size: 1.8rem; }
+  .page-hero { padding: 60px 0 40px; }
+  .project-links { flex-wrap: wrap; }
+  .alert-container { right: 10px; left: 10px; max-width: none; }
+}
+
+/* -- Small Mobile (= 480px) -------------------------------- */
+@media (max-width: 480px) {
+  .hero-name { font-size: 2rem; }
+  .hero-title { font-size: 1.1rem; }
+  .btn-primary-custom, .btn-outline-custom { padding: 0.7rem 1.3rem; font-size: 0.9rem; }
+  .skill-grid { grid-template-columns: repeat(3, 1fr); }
+  .hero-image-ring-1 { width: 200px; height: 200px; }
+  .hero-image-ring-2 { width: 165px; height: 165px; }
+  .hero-img, .hero-img-placeholder { width: 150px; height: 150px; font-size: 3.5rem; }
+}

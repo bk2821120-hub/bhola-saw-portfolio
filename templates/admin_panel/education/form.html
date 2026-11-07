@@ -1,0 +1,78 @@
+<!-- Education Form -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">{{ page_title }}</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'education:list' %}">Education</a> / {{ page_title }}</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="admin-form-label">Degree / Course Name</label>
+          {{ form.degree }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Institution / College</label>
+          {{ form.institution }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">University / Board</label>
+          {{ form.university_or_board }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">Start Year</label>
+          {{ form.start_year }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">End Year (Leave blank if ongoing)</label>
+          {{ form.end_year }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Result / Grade / CGPA</label>
+          {{ form.result }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Institution Logo</label>
+          {{ form.institution_logo }}
+        </div>
+        <div class="col-md-2">
+          <label class="admin-form-label">Display Order</label>
+          {{ form.display_order }}
+        </div>
+        <div class="col-md-2 d-flex align-items-center pt-4">
+          <div class="form-check">
+            {{ form.active }}
+            <label class="form-check-label ms-2" for="id_active">Active</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Description / Key Highlights</label>
+          {{ form.description }}
+        </div>
+        <div class="col-12 mt-4 d-flex gap-2">
+          <button type="submit" class="admin-btn admin-btn-primary"><i class="bi bi-save me-1"></i> Save Education</button>
+          <a href="{% url 'education:list' %}" class="admin-btn admin-btn-outline">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

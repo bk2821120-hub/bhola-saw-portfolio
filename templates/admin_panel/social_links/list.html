@@ -1,0 +1,49 @@
+﻿<!-- Social Links List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Social Links</h1>
+    <div class="admin-breadcrumb">Manage links displayed in the hero, navbar, and footer</div>
+  </div>
+  <a href="{% url 'portfolio_admin:social_link_add' %}" class="admin-btn admin-btn-primary">
+    <i class="bi bi-plus-lg me-1"></i> Add Social Link
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>URL</th>
+          <th>Icon</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for link in links %}
+        <tr>
+          <td class="fw-bold"><i class="bi {{ link.icon }} me-1"></i> {{ link.get_platform_display }}</td>
+          <td><a href="{{ link.url }}" target="_blank" class="text-secondary text-truncate d-inline-block" style="max-width: 250px;">{{ link.url }}</a></td>
+          <td><code>{{ link.icon }}</code></td>
+          <td>{{ link.display_order }}</td>
+          <td>
+            {% if link.active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Inactive</span>{% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{% url 'portfolio_admin:social_link_edit' link.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'portfolio_admin:social_link_delete' link.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No social links added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

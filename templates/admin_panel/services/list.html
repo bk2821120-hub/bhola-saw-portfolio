@@ -1,0 +1,54 @@
+<!-- Services List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Freelance Services</h1>
+    <div class="admin-breadcrumb">Manage freelance and consulting services displayed on the public site</div>
+  </div>
+  <a href="{% url 'services:add' %}" class="admin-btn admin-btn-primary">
+    <i class="bi bi-plus-lg me-1"></i> Add Service
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Service Title</th>
+          <th>Starting Price</th>
+          <th>Deliverables Count</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+        <tr>
+          <td class="fw-bold">
+            <i class="bi {{ s.icon|default:'bi-briefcase' }} text-primary me-2"></i> {{ s.title }}
+            <div class="small text-muted">{{ s.short_description|truncatechars:45 }}</div>
+          </td>
+          <td><span class="badge bg-success-subtle text-success border border-success">{{ s.starting_price|default:'Custom Quote' }}</span></td>
+          <td><span class="badge bg-dark border text-light">{{ s.deliverables_list|length }} items</span></td>
+          <td>{{ s.display_order }}</td>
+          <td>
+            <a href="{% url 'services:toggle' s.pk %}" class="text-decoration-none">
+              {% if s.is_active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Hidden</span>{% endif %}
+            </a>
+          </td>
+          <td class="text-end">
+            <a href="{% url 'services:edit' s.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'services:delete' s.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No services created yet. Click "Add Service" to create one.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

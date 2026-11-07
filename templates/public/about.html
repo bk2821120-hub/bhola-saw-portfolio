@@ -1,0 +1,63 @@
+﻿<!-- About Page -->
+{% extends 'base/base.html' %}
+{% block title %}About Me | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Background & Bio</span>
+    <h1 class="page-hero-title">About Me</h1>
+    <p class="page-hero-sub">Passionate developer, engineer, and continuous learner</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-5 text-center">
+        <div class="hero-image-wrap">
+          {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" class="hero-img">
+          {% else %}
+            <div class="hero-img-placeholder">
+              <span>{{ profile.name|default:"BK"|slice:":2"|upper }}</span>
+            </div>
+          {% endif %}
+        </div>
+        <div class="mt-4">
+          <h3 class="fw-bold mb-1">{{ profile.name|default:"Bhola Kumar" }}</h3>
+          <p class="text-primary-light mb-2">{{ profile.professional_title|default:"Software Engineer" }}</p>
+          {% if profile.location %}<p class="text-muted small"><i class="bi bi-geo-alt me-1"></i> {{ profile.location }}</p>{% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="glass-card">
+          <h3 class="fw-bold text-white mb-3"><i class="bi bi-person-lines-fill text-primary me-2"></i> Professional Introduction</h3>
+          <p class="text-secondary leading-relaxed mb-4">
+            {{ profile.bio|default:profile.short_intro|linebreaks }}
+          </p>
+
+          {% if profile.career_objective %}
+            <h4 class="fw-bold text-white mb-2"><i class="bi bi-compass text-info me-2"></i> Career Objective</h4>
+            <p class="text-secondary mb-4">{{ profile.career_objective }}</p>
+          {% endif %}
+
+          <div class="row g-3 pt-3 border-top border-secondary">
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Email</span>
+              <a href="mailto:{{ profile.email }}" class="text-info fw-semibold">{{ profile.email|default:"contact@example.com" }}</a>
+            </div>
+            {% if profile.phone %}
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Phone</span>
+              <span class="text-light fw-semibold">{{ profile.phone }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

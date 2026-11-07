@@ -1,0 +1,39 @@
+﻿<!-- Project Card Component -->
+<div class="project-card">
+  {% if project.thumbnail %}
+    <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="project-card-img" loading="lazy">
+  {% else %}
+    <div class="project-card-img-placeholder">
+      <i class="bi bi-code-slash"></i>
+    </div>
+  {% endif %}
+  <div class="project-card-body">
+    <span class="project-category-badge">{{ project.get_category_display }}</span>
+    <h3 class="project-card-title">{{ project.title }}</h3>
+    <p class="project-card-desc">{{ project.short_description|default:project.description|truncatewords:20 }}</p>
+    
+    {% if project.technologies.all %}
+      <div class="tech-tags">
+        {% for tech in project.technologies.all %}
+          <span class="tech-tag">{{ tech.name }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="project-links">
+      <a href="{% url 'public:project_detail' project.slug %}" class="project-link-btn primary">
+        <i class="bi bi-eye"></i> Details
+      </a>
+      {% if project.github_url %}
+        <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="project-link-btn outline">
+          <i class="bi bi-github"></i> Code
+        </a>
+      {% endif %}
+      {% if project.live_demo_url %}
+        <a href="{{ project.live_demo_url }}" target="_blank" rel="noopener noreferrer" class="project-link-btn outline">
+          <i class="bi bi-box-arrow-up-right"></i> Live
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

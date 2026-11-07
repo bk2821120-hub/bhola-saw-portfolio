@@ -1,0 +1,45 @@
+﻿<!-- Experience List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Work Experience</h1>
+    <div class="admin-breadcrumb">Professional journey, internships, and roles</div>
+  </div>
+  <a href="{% url 'experience:add' %}" class="admin-btn admin-btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Experience</a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Company</th>
+          <th>Type</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for exp in items %}
+        <tr>
+          <td class="fw-bold">{{ exp.position }}</td>
+          <td>{{ exp.company }}</td>
+          <td><span class="badge bg-dark border text-light">{{ exp.get_employment_type_display }}</span></td>
+          <td><code>{{ exp.start_date|date:"M Y" }} — {{ exp.end_display }}</code></td>
+          <td>{% if exp.active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Hidden</span>{% endif %}</td>
+          <td class="text-end">
+            <a href="{% url 'experience:edit' exp.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'experience:delete' exp.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No experience records added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

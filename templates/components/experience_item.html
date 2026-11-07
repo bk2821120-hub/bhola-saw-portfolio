@@ -1,0 +1,30 @@
+﻿<!-- Experience Item Component -->
+<div class="timeline-item reveal">
+  <div class="timeline-dot"></div>
+  <div class="glass-card">
+    <div class="timeline-header">
+      <div>
+        <div class="timeline-title">{{ exp.position }}</div>
+        <div class="timeline-org">{{ exp.company }} {% if exp.location %}• <span class="text-muted">{{ exp.location }}</span>{% endif %}</div>
+      </div>
+      <div class="timeline-date">{{ exp.start_date|date:"M Y" }} — {{ exp.end_display }}</div>
+    </div>
+    {% if exp.description %}
+      <p class="timeline-body mt-2 mb-2">{{ exp.description }}</p>
+    {% endif %}
+    {% if exp.responsibilities_list %}
+      <ul class="text-secondary small ps-3 mb-2">
+        {% for resp in exp.responsibilities_list %}
+          <li>{{ resp }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if exp.skills_list %}
+      <div class="timeline-tags">
+        {% for s in exp.skills_list %}
+          <span class="tech-tag">{{ s }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>

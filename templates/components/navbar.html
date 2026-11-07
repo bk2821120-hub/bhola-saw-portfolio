@@ -1,0 +1,37 @@
+<!-- Navbar Component -->
+{% load static %}
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'public:home' %}">
+      {% if site_settings and site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}" height="32" class="me-2 rounded">
+      {% endif %}
+      <span>{% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% elif profile and profile.name %}{{ profile.name }}{% else %}Portfolio{% endif %}</span>
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portfolioNav" aria-controls="portfolioNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="portfolioNav">
+      <ul class="navbar-nav align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:about' %}">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:skills' %}">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:projects' %}">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:services' %}">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:experience' %}">Experience</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:education' %}">Education</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:certifications' %}">Certifications</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:achievements' %}">Achievements</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:blog' %}">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'public:resume' %}">Resume</a></li>
+        <li class="nav-item ms-lg-2">
+          <a class="btn-primary-custom py-1 px-3 fs-6" href="{% url 'public:contact' %}">
+            <i class="bi bi-chat-dots-fill me-1"></i> Contact
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,102 @@
+<!-- Projects Form -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">{{ page_title }}</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'projects:list' %}">Projects</a> / {{ page_title }}</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="admin-form-label">Project Title</label>
+          {{ form.title }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Category</label>
+          {{ form.category }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Short Description</label>
+          {{ form.short_description }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Technologies Used (Comma-separated, e.g. Python, Django, MySQL, Bootstrap)</label>
+          {{ form.technologies }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Thumbnail Image</label>
+          {{ form.thumbnail }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">Project Status</label>
+          {{ form.status }}
+        </div>
+        <div class="col-md-3">
+          <label class="admin-form-label">Display Order</label>
+          {{ form.display_order }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">GitHub Repository URL</label>
+          {{ form.github_url }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Live Demo URL</label>
+          {{ form.live_demo_url }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Start Date</label>
+          {{ form.start_date }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">End Date</label>
+          {{ form.end_date }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Detailed Description / Overview</label>
+          {{ form.description }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Problem Statement</label>
+          {{ form.problem_statement }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Solution & Architecture</label>
+          {{ form.solution }}
+        </div>
+        <div class="col-md-6 d-flex gap-4 pt-3">
+          <div class="form-check">
+            {{ form.featured }}
+            <label class="form-check-label ms-2" for="id_featured">Featured on Home</label>
+          </div>
+          <div class="form-check">
+            {{ form.active }}
+            <label class="form-check-label ms-2" for="id_active">Active / Public</label>
+          </div>
+        </div>
+        <div class="col-12 mt-4 d-flex gap-2">
+          <button type="submit" class="admin-btn admin-btn-primary"><i class="bi bi-save me-1"></i> Save Project</button>
+          <a href="{% url 'projects:list' %}" class="admin-btn admin-btn-outline">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

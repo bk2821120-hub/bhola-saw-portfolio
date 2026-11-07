@@ -1,0 +1,190 @@
+<!-- Admin Dashboard -->
+{% extends 'admin_panel/base.html' %}
+
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Dashboard Overview</h1>
+    <div class="admin-breadcrumb">Welcome back, {{ request.user.get_full_name|default:request.user.username }}!</div>
+  </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'projects:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon indigo"><i class="bi bi-kanban"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.projects }}</div>
+        <div class="admin-stat-label">Projects</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'skills:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon purple"><i class="bi bi-cpu"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.skills }}</div>
+        <div class="admin-stat-label">Skills</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'certifications:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon green"><i class="bi bi-patch-check"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.certifications }}</div>
+        <div class="admin-stat-label">Certificates</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'experience:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon blue"><i class="bi bi-briefcase"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.experiences }}</div>
+        <div class="admin-stat-label">Experience</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'education:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon yellow"><i class="bi bi-mortarboard"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.educations }}</div>
+        <div class="admin-stat-label">Education</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'achievements:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon orange"><i class="bi bi-trophy"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.achievements }}</div>
+        <div class="admin-stat-label">Achievements</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'blog:list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon teal"><i class="bi bi-journal-text"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.blog_posts }}</div>
+        <div class="admin-stat-label">Blog Posts</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-lg-3">
+    <a href="{% url 'contact:message_list' %}" class="admin-stat-card">
+      <div class="admin-stat-icon red"><i class="bi bi-envelope"></i></div>
+      <div>
+        <div class="admin-stat-value">{{ stats.unread_messages }} <span class="text-secondary fs-6">/ {{ stats.total_messages }}</span></div>
+        <div class="admin-stat-label">New Messages</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mb-4">
+  <h6 class="text-uppercase text-muted fw-bold small mb-3">Quick Actions</h6>
+  <div class="row g-2">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'projects:add' %}" class="quick-action-card">
+        <i class="bi bi-folder-plus"></i>
+        <span>Add Project</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'services:add' %}" class="quick-action-card">
+        <i class="bi bi-briefcase-fill"></i>
+        <span>Add Service</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'skills:add' %}" class="quick-action-card">
+        <i class="bi bi-plus-circle"></i>
+        <span>Add Skill</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'certifications:add' %}" class="quick-action-card">
+        <i class="bi bi-award"></i>
+        <span>Add Certificate</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'experience:add' %}" class="quick-action-card">
+        <i class="bi bi-building-add"></i>
+        <span>Add Experience</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'education:add' %}" class="quick-action-card">
+        <i class="bi bi-mortarboard"></i>
+        <span>Add Education</span>
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <a href="{% url 'blog:add' %}" class="quick-action-card">
+        <i class="bi bi-pencil-square"></i>
+        <span>Write Blog</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Content Tables -->
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <div class="admin-card-title"><i class="bi bi-kanban me-1 text-primary"></i> Recent Projects</div>
+        <a href="{% url 'projects:list' %}" class="admin-btn admin-btn-outline admin-btn-sm">View All</a>
+      </div>
+      <div class="admin-card-body p-0">
+        {% if recent_projects %}
+          {% for p in recent_projects %}
+            <div class="admin-recent-item px-3">
+              <div class="admin-recent-item-icon"><i class="bi bi-code-square"></i></div>
+              <div class="flex-grow-1">
+                <div class="admin-recent-item-title">{{ p.title }}</div>
+                <div class="admin-recent-item-meta">{{ p.get_category_display }} • {{ p.created_at|date:"M d, Y" }}</div>
+              </div>
+              <a href="{% url 'projects:edit' p.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="p-4 text-center text-muted">No projects added yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <div class="admin-card-title"><i class="bi bi-envelope me-1 text-danger"></i> Recent Messages</div>
+        <a href="{% url 'contact:message_list' %}" class="admin-btn admin-btn-outline admin-btn-sm">View All</a>
+      </div>
+      <div class="admin-card-body p-0">
+        {% if recent_messages %}
+          {% for m in recent_messages %}
+            <div class="admin-recent-item px-3">
+              {% if not m.read %}<div class="unread-dot"></div>{% endif %}
+              <div class="admin-recent-item-icon"><i class="bi bi-chat-left-text"></i></div>
+              <div class="flex-grow-1">
+                <div class="admin-recent-item-title">{{ m.name }} <span class="text-muted fw-normal">({{ m.subject|truncatechars:25 }})</span></div>
+                <div class="admin-recent-item-meta">{{ m.email }} • {{ m.created_at|timesince }} ago</div>
+              </div>
+              <a href="{% url 'contact:message_detail' m.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="p-4 text-center text-muted">No messages received yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+﻿<!-- Achievements List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Achievements</h1>
+    <div class="admin-breadcrumb">Honors, awards, hackathons, and recognitions</div>
+  </div>
+  <a href="{% url 'achievements:add' %}" class="admin-btn admin-btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Achievement</a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Achievement Title</th>
+          <th>Organization</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in items %}
+        <tr>
+          <td class="fw-bold"><i class="bi bi-trophy-fill text-warning me-1"></i> {{ a.title }}</td>
+          <td>{{ a.organization|default:'—' }}</td>
+          <td><code>{{ a.date|date:"M Y"|default:'—' }}</code></td>
+          <td>{% if a.active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Hidden</span>{% endif %}</td>
+          <td class="text-end">
+            <a href="{% url 'achievements:edit' a.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'achievements:delete' a.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted p-4">No achievements added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

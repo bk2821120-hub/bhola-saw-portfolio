@@ -1,0 +1,78 @@
+<!-- Certifications Form -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">{{ page_title }}</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'certifications:list' %}">Certifications</a> / {{ page_title }}</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="admin-form-label">Certificate Name</label>
+          {{ form.name }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Issuing Organization</label>
+          {{ form.organization }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Issue Date</label>
+          {{ form.issue_date }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Credential ID</label>
+          {{ form.credential_id }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Verification URL</label>
+          {{ form.verification_url }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Certificate Image (PNG/JPG)</label>
+          {{ form.image }}
+        </div>
+        <div class="col-md-6">
+          <label class="admin-form-label">Certificate PDF File</label>
+          {{ form.pdf }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Description / Topics Covered</label>
+          {{ form.description }}
+        </div>
+        <div class="col-md-2">
+          <label class="admin-form-label">Display Order</label>
+          {{ form.display_order }}
+        </div>
+        <div class="col-md-2 d-flex align-items-center pt-4">
+          <div class="form-check">
+            {{ form.active }}
+            <label class="form-check-label ms-2" for="id_active">Active</label>
+          </div>
+        </div>
+        <div class="col-12 mt-4 d-flex gap-2">
+          <button type="submit" class="admin-btn admin-btn-primary"><i class="bi bi-save me-1"></i> Save Certificate</button>
+          <a href="{% url 'certifications:list' %}" class="admin-btn admin-btn-outline">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

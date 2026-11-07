@@ -1,0 +1,62 @@
+<!-- Documents Upload Form -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">{{ page_title }}</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'documents:list' %}">Documents</a> / {{ page_title }}</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <form method="post" enctype="multipart/form-data" class="admin-form">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-danger mb-4">
+          <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the errors below:</div>
+          <ul class="mb-0 ps-3 small">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{% if field != '__all__' %}<strong>{{ field|title }}:</strong> {% endif %}{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="admin-form-label">Document Name / Title</label>
+          {{ form.name }}
+        </div>
+        <div class="col-md-4">
+          <label class="admin-form-label">Document Type</label>
+          {{ form.document_type }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">File (PDF, DOCX, etc.)</label>
+          {{ form.file }}
+        </div>
+        <div class="col-12">
+          <label class="admin-form-label">Description / Version Notes</label>
+          {{ form.description }}
+        </div>
+        <div class="col-md-6 d-flex gap-4 pt-2">
+          <div class="form-check">
+            {{ form.active }}
+            <label class="form-check-label text-info ms-2" for="id_active">Set as Active Current Version</label>
+          </div>
+          <div class="form-check">
+            {{ form.public }}
+            <label class="form-check-label text-success ms-2" for="id_public">Make Publicly Downloadable</label>
+          </div>
+        </div>
+        <div class="col-12 mt-4 d-flex gap-2">
+          <button type="submit" class="admin-btn admin-btn-primary"><i class="bi bi-cloud-arrow-up me-1"></i> Upload File</button>
+          <a href="{% url 'documents:list' %}" class="admin-btn admin-btn-outline">Cancel</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

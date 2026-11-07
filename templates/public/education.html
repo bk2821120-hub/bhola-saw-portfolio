@@ -1,0 +1,28 @@
+﻿<!-- Education Page -->
+{% extends 'base/base.html' %}
+{% block title %}Education | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Academics</span>
+    <h1 class="page-hero-title">Education & Qualifications</h1>
+    <p class="page-hero-sub">Academic degrees, institutions, and coursework</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="timeline" style="max-width: 800px; margin: 0 auto;">
+      {% for edu in educations %}
+        {% include 'components/education_item.html' with edu=edu %}
+      {% empty %}
+        <div class="text-center text-muted py-5">
+          <i class="bi bi-mortarboard fs-1 d-block mb-3"></i>
+          <p>No education records added yet.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

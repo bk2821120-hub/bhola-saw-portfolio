@@ -1,0 +1,19 @@
+﻿<!-- Education Item Component -->
+<div class="timeline-item reveal">
+  <div class="timeline-dot"></div>
+  <div class="glass-card">
+    <div class="timeline-header">
+      <div>
+        <div class="timeline-title">{{ edu.degree }}</div>
+        <div class="timeline-org">{{ edu.institution }} {% if edu.university_or_board %}• <span class="text-muted">{{ edu.university_or_board }}</span>{% endif %}</div>
+      </div>
+      <div class="timeline-date">{{ edu.duration }}</div>
+    </div>
+    {% if edu.result %}
+      <div class="badge bg-secondary-subtle text-light border border-secondary mb-2">Score / Grade: {{ edu.result }}</div>
+    {% endif %}
+    {% if edu.description %}
+      <p class="timeline-body mt-2 mb-0">{{ edu.description }}</p>
+    {% endif %}
+  </div>
+</div>

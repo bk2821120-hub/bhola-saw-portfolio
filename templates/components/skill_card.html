@@ -1,0 +1,10 @@
+﻿<!-- Skill Card Component -->
+<div class="skill-chip">
+  <div class="skill-chip-icon">
+    <i class="bi {{ skill.icon|default:'bi-check2-circle' }}"></i>
+  </div>
+  <div class="skill-chip-name">{{ skill.name }}</div>
+  <div class="skill-level-bar" title="{{ skill.get_level_display }} ({{ skill.level_percentage }}%)">
+    <div class="skill-level-fill" style="width: {{ skill.level_percentage }}%;" data-width="{{ skill.level_percentage }}%"></div>
+  </div>
+</div>

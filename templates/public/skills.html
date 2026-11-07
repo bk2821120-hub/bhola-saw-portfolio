@@ -1,0 +1,36 @@
+﻿<!-- Skills Page -->
+{% extends 'base/base.html' %}
+{% block title %}Skills & Expertise | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Tech Stack</span>
+    <h1 class="page-hero-title">Skills & Technologies</h1>
+    <p class="page-hero-sub">Organized by specialization and proficiency level</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    {% for cat, skills in categories_with_skills %}
+      <div class="mb-5 reveal">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <h3 class="fw-bold text-white mb-0">{{ cat.name }}</h3>
+          <div class="flex-grow-1" style="height: 1px; background: var(--border-color);"></div>
+        </div>
+        <div class="skill-grid">
+          {% for skill in skills %}
+            {% include 'components/skill_card.html' with skill=skill %}
+          {% endfor %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="text-center text-muted py-5">
+        <i class="bi bi-cpu fs-1 d-block mb-3"></i>
+        <p>No categorized skills available yet.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

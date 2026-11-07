@@ -1,0 +1,216 @@
+﻿{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.name|default:"Developer Portfolio" }} | {{ profile.professional_title|default:"Software Engineer" }}{% endblock %}
+
+{% block content %}
+<!-- â”€â”€ Hero Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<section class="hero-section">
+  <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="container hero-content">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <span class="hero-greeting">
+          <i class="bi bi-terminal me-2"></i>Hello World, I'm
+        </span>
+        <h1 class="hero-name">{{ profile.name|default:"Bhola Kumar" }}</h1>
+        <h2 class="hero-title">{{ profile.professional_title|default:"Full-Stack & Machine Learning Engineer" }}</h2>
+        <p class="hero-intro">
+          {{ profile.short_intro|default:"Building scalable, database-driven web applications and modern AI solutions with a passion for clean architecture." }}
+        </p>
+
+        {% if profile.current_focus %}
+          <div class="hero-focus">
+            <span>Currently focused on: <strong>{{ profile.current_focus }}</strong></span>
+          </div>
+        {% endif %}
+
+        <div class="hero-buttons">
+          <a href="{% url 'public:projects' %}" class="btn-primary-custom">
+            <i class="bi bi-folder-check"></i> View Projects
+          </a>
+          <a href="{% url 'public:resume' %}" class="btn-outline-custom">
+            <i class="bi bi-file-earmark-arrow-down"></i> Resume
+          </a>
+          <a href="{% url 'public:contact' %}" class="btn-outline-custom">
+            <i class="bi bi-envelope"></i> Contact Me
+          </a>
+        </div>
+
+        <div class="hero-social">
+          {% for s in social_links %}
+            <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="{{ s.get_platform_display }}">
+              <i class="bi {{ s.icon|default:'bi-link' }}"></i>
+            </a>
+          {% endfor %}
+          {% if profile.email %}
+            <a href="mailto:{{ profile.email }}" class="social-icon-btn" title="Send Email">
+              <i class="bi bi-envelope-at-fill"></i>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-5 text-center">
+        <div class="hero-image-wrap">
+          <div class="hero-image-ring hero-image-ring-1"></div>
+          <div class="hero-image-ring hero-image-ring-2"></div>
+          {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" class="hero-img">
+          {% else %}
+            <div class="hero-img-placeholder">
+              <span>{{ profile.name|default:"BK"|slice:":2"|upper }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â”€â”€ Statistics Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<section class="section-pad-sm" style="border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); background: rgba(255,255,255,0.01);">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-number counter-num" data-target="{{ stats.projects }}">{{ stats.projects }}+</div>
+          <div class="stat-label">Projects Built</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-number counter-num" data-target="{{ stats.skills }}">{{ stats.skills }}+</div>
+          <div class="stat-label">Skills & Tech</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-number counter-num" data-target="{{ stats.certifications }}">{{ stats.certifications }}+</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-number counter-num" data-target="{{ profile.years_of_experience|default:stats.experience }}">{{ profile.years_of_experience|default:stats.experience }}+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â”€â”€ Featured Projects Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tag">Portfolio Showcase</span>
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">A curated selection of applications and systems developed with modern stacks</p>
+    </div>
+
+    <div class="row g-4">
+      {% for project in featured_projects %}
+        <div class="col-md-6 col-lg-4 reveal">
+          {% include 'components/project_card.html' with project=project %}
+        </div>
+      {% empty %}
+        <div class="col-12 text-center text-muted py-5">
+          <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+          <p>No featured projects yet. Check back soon!</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'public:projects' %}" class="btn-primary-custom">
+        <i class="bi bi-grid-3x3-gap"></i> Explore All Projects
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- â”€â”€ Skills Preview Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<section class="section-pad" style="background: rgba(255,255,255,0.015); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tag">Technical Proficiency</span>
+      <h2 class="section-title">Core Skills & Stacks</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Technologies, frameworks, and developer tools I leverage daily</p>
+    </div>
+
+    <div class="skill-grid">
+      {% for skill in skills|slice:":12" %}
+        {% include 'components/skill_card.html' with skill=skill %}
+      {% empty %}
+        <div class="text-center text-muted w-100 py-4">No skills loaded yet.</div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'public:skills' %}" class="btn-outline-custom">
+        <i class="bi bi-arrow-right-circle"></i> View Categorized Skills
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- â”€â”€ Recent Blog Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+{% if recent_blog %}
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tag">Articles & Writing</span>
+      <h2 class="section-title">Latest Blog Posts</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Insights, technical walkthroughs, and architectural guides</p>
+    </div>
+
+    <div class="row g-4">
+      {% for post in recent_blog %}
+        <div class="col-md-4 reveal">
+          <div class="blog-card">
+            {% if post.thumbnail %}
+              <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}" class="blog-card-img" loading="lazy">
+            {% else %}
+              <div class="blog-card-placeholder"><i class="bi bi-journal-richtext"></i></div>
+            {% endif %}
+            <div class="blog-card-body">
+              <div class="blog-card-meta"><i class="bi bi-calendar3 me-1"></i> {{ post.published_at|default:post.created_at|date:"M d, Y" }}</div>
+              <h3 class="blog-card-title">{{ post.title }}</h3>
+              <p class="blog-card-excerpt">{{ post.content|striptags|truncatewords:20 }}</p>
+              <a href="{% url 'public:blog_detail' post.slug %}" class="text-info fw-semibold small text-decoration-none mt-auto">
+                Read Article <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- â”€â”€ Contact CTA Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<section class="section-pad" style="background: var(--gradient-hero);">
+  <div class="container text-center reveal">
+    <span class="section-tag">Get in Touch</span>
+    <h2 class="section-title">Let's Collaborate on Your Next Project</h2>
+    <p class="section-subtitle">Whether you have an inquiry, open position, or idea to discuss, my inbox is always open.</p>
+    <div class="d-inline-flex gap-3 flex-wrap justify-content-center">
+      <a href="{% url 'public:contact' %}" class="btn-primary-custom">
+        <i class="bi bi-envelope-check"></i> Send a Message
+      </a>
+      <a href="{% url 'public:resume' %}" class="btn-outline-custom">
+        <i class="bi bi-file-earmark-person"></i> View Resume
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

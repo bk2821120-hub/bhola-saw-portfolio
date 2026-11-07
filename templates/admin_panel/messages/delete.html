@@ -1,0 +1,18 @@
+<!-- Delete Confirmation Generic -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <h1 class="admin-page-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>{{ page_title }}</h1>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body text-center py-5">
+    <p class="fs-5 mb-4">Are you sure you want to delete <strong>{{ msg }}</strong>?</p>
+    <p class="text-muted small mb-4">This action cannot be undone.</p>
+    <form method="post" class="d-inline-flex gap-3">
+      {% csrf_token %}
+      <button type="submit" class="admin-btn admin-btn-danger px-4 py-2"><i class="bi bi-trash me-1"></i> Yes, Confirm Delete</button>
+      <a href="javascript:history.back()" class="admin-btn admin-btn-outline px-4 py-2">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

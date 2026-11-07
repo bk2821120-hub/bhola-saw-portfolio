@@ -1,0 +1,62 @@
+<!-- Messages Detail -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Message Details</h1>
+    <div class="admin-breadcrumb"><a href="{% url 'contact:message_list' %}">Messages</a> / {{ msg.subject }}</div>
+  </div>
+  <a href="{% url 'contact:message_list' %}" class="admin-btn admin-btn-outline"><i class="bi bi-arrow-left me-1"></i> Back to Messages</a>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+      <div>
+        <h4 class="fw-bold text-white mb-1">{{ msg.subject|default:"Project Inquiry" }}</h4>
+        <div class="text-muted small">From: <strong class="text-info">{{ msg.name }}</strong> &lt;{{ msg.email }}&gt;</div>
+      </div>
+      <div class="text-end">
+        <div class="badge bg-dark border text-light mb-1">{{ msg.created_at|date:"F d, Y at H:i" }}</div>
+      </div>
+    </div>
+
+    {% if msg.service or msg.budget or msg.timeline %}
+      <div class="row g-3 mb-4 p-3 rounded bg-dark border border-secondary">
+        {% if msg.service %}
+          <div class="col-md-4">
+            <span class="text-muted small d-block">Service Required</span>
+            <span class="text-primary fw-semibold"><i class="bi bi-briefcase me-1"></i>{{ msg.service }}</span>
+          </div>
+        {% endif %}
+        {% if msg.budget %}
+          <div class="col-md-4">
+            <span class="text-muted small d-block">Project Budget</span>
+            <span class="text-success fw-semibold"><i class="bi bi-cash me-1"></i>{{ msg.budget }}</span>
+          </div>
+        {% endif %}
+        {% if msg.timeline %}
+          <div class="col-md-4">
+            <span class="text-muted small d-block">Expected Timeline</span>
+            <span class="text-warning fw-semibold"><i class="bi bi-clock me-1"></i>{{ msg.timeline }}</span>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="p-4 rounded bg-dark border border-secondary mb-4" style="min-height: 180px; white-space: pre-wrap; font-size: 1rem; line-height: 1.8;">
+      {{ msg.message }}
+    </div>
+    <div class="d-flex gap-2">
+      <a href="mailto:{{ msg.email }}?subject=Re: {{ msg.subject }}" class="admin-btn admin-btn-primary">
+        <i class="bi bi-reply-fill me-1"></i> Reply via Email
+      </a>
+      <a href="{% url 'contact:message_toggle' msg.pk %}" class="admin-btn admin-btn-outline">
+        <i class="bi bi-envelope me-1"></i> Mark as {% if msg.read %}Unread{% else %}Read{% endif %}
+      </a>
+      <a href="{% url 'contact:message_delete' msg.pk %}" class="admin-btn admin-btn-danger ms-auto">
+        <i class="bi bi-trash me-1"></i> Delete
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!-- Messages List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Contact Messages</h1>
+    <div class="admin-breadcrumb">Inquiries submitted through the public contact form</div>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Sender Name</th>
+          <th>Email</th>
+          <th>Subject</th>
+          <th>Received</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for msg in messages_list %}
+        <tr class="{% if not msg.read %}bg-primary-subtle bg-opacity-10{% endif %}">
+          <td style="width: 40px;">
+            {% if not msg.read %}<div class="unread-dot" title="Unread"></div>{% else %}<i class="bi bi-check2-all text-muted"></i>{% endif %}
+          </td>
+          <td class="fw-bold">{{ msg.name }}</td>
+          <td><a href="mailto:{{ msg.email }}" class="text-info">{{ msg.email }}</a></td>
+          <td>
+            <div>{{ msg.subject|default:"Project Inquiry"|truncatechars:40 }}</div>
+            {% if msg.service %}<span class="badge bg-primary-subtle text-primary border border-primary small" style="font-size: 0.72rem;">{{ msg.service }}</span>{% endif %}
+          </td>
+          <td><code>{{ msg.created_at|date:"M d, Y H:i" }}</code></td>
+          <td class="text-end">
+            <a href="{% url 'contact:message_detail' msg.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-eye"></i> Read</a>
+            <a href="{% url 'contact:message_delete' msg.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No contact messages received yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

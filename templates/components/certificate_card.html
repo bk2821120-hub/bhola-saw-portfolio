@@ -1,0 +1,32 @@
+﻿<!-- Certificate Card Component -->
+<div class="cert-card">
+  {% if cert.image %}
+    <img src="{{ cert.image.url }}" alt="{{ cert.name }}" class="cert-card-img" loading="lazy">
+  {% else %}
+    <div class="cert-card-placeholder">
+      <i class="bi bi-patch-check"></i>
+    </div>
+  {% endif %}
+  <div class="cert-card-body">
+    <h4 class="cert-name">{{ cert.name }}</h4>
+    <div class="cert-org">{{ cert.organization }}</div>
+    {% if cert.issue_date %}
+      <div class="cert-date"><i class="bi bi-calendar3 me-1"></i>{{ cert.issue_date|date:"F Y" }}</div>
+    {% endif %}
+    {% if cert.credential_id %}
+      <div class="small text-muted mt-1">ID: {{ cert.credential_id }}</div>
+    {% endif %}
+    <div class="mt-3 d-flex gap-2">
+      {% if cert.verification_url %}
+        <a href="{{ cert.verification_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light rounded-pill px-3">
+          <i class="bi bi-shield-check me-1"></i> Verify
+        </a>
+      {% endif %}
+      {% if cert.pdf %}
+        <a href="{{ cert.pdf.url }}" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3">
+          <i class="bi bi-file-earmark-pdf me-1"></i> PDF
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

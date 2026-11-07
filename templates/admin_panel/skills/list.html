@@ -1,0 +1,58 @@
+﻿<!-- Skills List -->
+{% extends 'admin_panel/base.html' %}
+{% block admin_content %}
+<div class="admin-page-header">
+  <div>
+    <h1 class="admin-page-title">Skills Management</h1>
+    <div class="admin-breadcrumb">Manage technical and domain skills</div>
+  </div>
+  <a href="{% url 'skills:add' %}" class="admin-btn admin-btn-primary">
+    <i class="bi bi-plus-lg me-1"></i> Add Skill
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Skill Name</th>
+          <th>Category</th>
+          <th>Level</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for skill in skills %}
+        <tr>
+          <td class="fw-bold"><i class="bi {{ skill.icon|default:'bi-check2' }} me-2 text-primary"></i> {{ skill.name }}</td>
+          <td><span class="badge bg-dark border text-light">{{ skill.category.name|default:'Uncategorized' }}</span></td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <span class="small">{{ skill.get_level_display }}</span>
+              <div class="progress flex-grow-1" style="height: 4px; width: 60px; background: rgba(255,255,255,0.1);">
+                <div class="progress-bar bg-primary" style="width: {{ skill.level_percentage }}%;"></div>
+              </div>
+            </div>
+          </td>
+          <td>{{ skill.display_order }}</td>
+          <td>
+            <a href="{% url 'skills:toggle' skill.pk %}" class="text-decoration-none">
+              {% if skill.active %}<span class="badge-active">Active</span>{% else %}<span class="badge-inactive">Hidden</span>{% endif %}
+            </a>
+          </td>
+          <td class="text-end">
+            <a href="{% url 'skills:edit' skill.pk %}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'skills:delete' skill.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted p-4">No skills added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

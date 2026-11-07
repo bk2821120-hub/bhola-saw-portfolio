@@ -1,0 +1,87 @@
+﻿<!-- Project Detail Page -->
+{% extends 'base/base.html' %}
+{% block title %}{{ project.title }} | Project Details{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">{{ project.get_category_display }}</span>
+    <h1 class="page-hero-title">{{ project.title }}</h1>
+    <p class="page-hero-sub">{{ project.short_description }}</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-8">
+        <div class="glass-card mb-4">
+          {% if project.thumbnail %}
+            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="img-fluid rounded mb-4 w-100" style="max-height: 450px; object-fit: cover;">
+          {% endif %}
+
+          <h3 class="fw-bold text-white mb-3">Project Overview</h3>
+          <div class="text-secondary leading-relaxed mb-4">
+            {{ project.description|linebreaks }}
+          </div>
+
+          {% if project.problem_statement %}
+            <h4 class="fw-bold text-white mt-4 mb-2"><i class="bi bi-exclamation-octagon text-danger me-2"></i> Problem Statement</h4>
+            <div class="text-secondary mb-4">{{ project.problem_statement|linebreaks }}</div>
+          {% endif %}
+
+          {% if project.solution %}
+            <h4 class="fw-bold text-white mt-4 mb-2"><i class="bi bi-check-circle text-success me-2"></i> Solution & Implementation</h4>
+            <div class="text-secondary mb-4">{{ project.solution|linebreaks }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="glass-card sticky-top" style="top: 100px;">
+          <h4 class="fw-bold text-white mb-4">Project Meta</h4>
+          
+          <div class="mb-3">
+            <span class="text-muted small d-block">Status</span>
+            <span class="badge bg-secondary-subtle text-light border border-secondary">{{ project.get_status_display }}</span>
+          </div>
+
+          {% if project.technologies.all %}
+            <div class="mb-3">
+              <span class="text-muted small d-block mb-2">Technologies</span>
+              <div class="tech-tags">
+                {% for t in project.technologies.all %}
+                  <span class="tech-tag">{{ t.name }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          {% if project.start_date %}
+            <div class="mb-3">
+              <span class="text-muted small d-block">Timeline</span>
+              <span class="text-light">{{ project.start_date|date:"M Y" }} — {{ project.end_date|date:"M Y"|default:"Present" }}</span>
+            </div>
+          {% endif %}
+
+          <div class="d-grid gap-2 mt-4 pt-3 border-top border-secondary">
+            {% if project.live_demo_url %}
+              <a href="{{ project.live_demo_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary-custom justify-content-center">
+                <i class="bi bi-box-arrow-up-right"></i> Live Demonstration
+              </a>
+            {% endif %}
+            {% if project.github_url %}
+              <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="btn-outline-custom justify-content-center">
+                <i class="bi bi-github"></i> View Source Code
+              </a>
+            {% endif %}
+            <a href="{% url 'public:projects' %}" class="btn btn-sm btn-link text-secondary text-center mt-2">
+              <i class="bi bi-arrow-left me-1"></i> Back to all projects
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

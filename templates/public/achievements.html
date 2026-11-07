@@ -1,0 +1,59 @@
+﻿<!-- Achievements Page -->
+{% extends 'base/base.html' %}
+{% block title %}Achievements | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <span class="section-tag">Honors & Awards</span>
+    <h1 class="page-hero-title">Achievements & Recognition</h1>
+    <p class="page-hero-sub">Hackathons, competitions, and notable milestones</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="row g-4">
+      {% for a in achievements %}
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="glass-card h-100 d-flex flex-direction-column">
+            {% if a.image %}
+              <img src="{{ a.image.url }}" alt="{{ a.title }}" class="img-fluid rounded mb-3" style="height: 180px; width: 100%; object-fit: cover;">
+            {% endif %}
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <i class="bi bi-trophy-fill text-warning fs-5"></i>
+              <h4 class="fw-bold text-white mb-0 fs-5">{{ a.title }}</h4>
+            </div>
+            {% if a.organization %}
+              <div class="text-primary-light small fw-semibold mb-1">{{ a.organization }}</div>
+            {% endif %}
+            {% if a.date %}
+              <div class="text-muted small mb-2"><i class="bi bi-calendar-event me-1"></i>{{ a.date|date:"F Y" }}</div>
+            {% endif %}
+            <p class="text-secondary small leading-relaxed flex-grow-1">{{ a.description }}</p>
+            {% if a.verification_url or a.pdf %}
+              <div class="d-flex gap-2 mt-3 pt-2 border-top border-secondary">
+                {% if a.verification_url %}
+                  <a href="{{ a.verification_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                    <i class="bi bi-link-45deg me-1"></i> Verify
+                  </a>
+                {% endif %}
+                {% if a.pdf %}
+                  <a href="{{ a.pdf.url }}" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3">
+                    <i class="bi bi-file-earmark-pdf me-1"></i> Proof
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center text-muted py-5">
+          <i class="bi bi-trophy fs-1 d-block mb-3"></i>
+          <p>No achievements added yet.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
