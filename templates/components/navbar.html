@@ -9,7 +9,7 @@
       <span>{% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% elif profile and profile.name %}{{ profile.name }}{% else %}Portfolio{% endif %}</span>
     </a>
 
-    <!-- Desktop Nav -->
+    <!-- Desktop Nav (lg+) -->
     <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex" id="portfolioNavDesktop">
       <ul class="navbar-nav align-items-center gap-1">
         <li class="nav-item"><a class="nav-link" href="{% url 'public:home' %}">Home</a></li>
@@ -31,42 +31,51 @@
       </ul>
     </div>
 
-    <!-- Mobile Hamburger Button -->
-    <button class="navbar-toggler d-lg-none" type="button" id="mobileMenuToggle" aria-label="Open navigation">
+    <!-- Mobile Hamburger (< lg) -->
+    <button class="navbar-toggler d-lg-none" type="button" id="mobileMenuToggle" aria-label="Open navigation menu">
       <i class="bi bi-list fs-4"></i>
     </button>
   </div>
 </nav>
 
-<!-- Mobile Offcanvas Sidebar -->
-<div class="mobile-sidebar-overlay" id="sidebarOverlay"></div>
-<aside class="mobile-sidebar" id="mobileSidebar" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+<!-- Dark overlay backdrop -->
+<div class="mobile-sidebar-overlay" id="sidebarOverlay" role="presentation"></div>
+
+<!-- LEFT slide-in sidebar -->
+<aside class="mobile-sidebar" id="mobileSidebar" role="dialog" aria-modal="true" aria-label="Site Navigation">
+
+  <!-- Header: close ✕ on left, brand text -->
   <div class="mobile-sidebar-header">
-    <span class="mobile-sidebar-brand">
-      {% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% elif profile and profile.name %}{{ profile.name }}{% else %}Portfolio{% endif %}
-    </span>
     <button class="mobile-sidebar-close" id="sidebarClose" aria-label="Close navigation">
       <i class="bi bi-x-lg"></i>
     </button>
+    <span class="mobile-sidebar-brand">
+      {% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% elif profile and profile.name %}{{ profile.name }}{% else %}Portfolio{% endif %}
+    </span>
   </div>
+
+  <!-- Scrollable nav links -->
   <nav class="mobile-sidebar-nav">
     <ul class="mobile-nav-list">
-      <li><a href="{% url 'public:home' %}" class="mobile-nav-link"><i class="bi bi-house-fill"></i><span>Home</span></a></li>
-      <li><a href="{% url 'public:about' %}" class="mobile-nav-link"><i class="bi bi-person-fill"></i><span>About</span></a></li>
-      <li><a href="{% url 'public:skills' %}" class="mobile-nav-link"><i class="bi bi-code-slash"></i><span>Skills</span></a></li>
-      <li><a href="{% url 'public:projects' %}" class="mobile-nav-link"><i class="bi bi-grid-fill"></i><span>Projects</span></a></li>
-      <li><a href="{% url 'public:services' %}" class="mobile-nav-link"><i class="bi bi-briefcase-fill"></i><span>Services</span></a></li>
-      <li><a href="{% url 'public:experience' %}" class="mobile-nav-link"><i class="bi bi-building"></i><span>Experience</span></a></li>
-      <li><a href="{% url 'public:education' %}" class="mobile-nav-link"><i class="bi bi-mortarboard-fill"></i><span>Education</span></a></li>
+      <li><a href="{% url 'public:home' %}"          class="mobile-nav-link"><i class="bi bi-house-fill"></i><span>Home</span></a></li>
+      <li><a href="{% url 'public:about' %}"         class="mobile-nav-link"><i class="bi bi-person-fill"></i><span>About</span></a></li>
+      <li><a href="{% url 'public:skills' %}"        class="mobile-nav-link"><i class="bi bi-code-slash"></i><span>Skills</span></a></li>
+      <li><a href="{% url 'public:projects' %}"      class="mobile-nav-link"><i class="bi bi-grid-fill"></i><span>Projects</span></a></li>
+      <li><a href="{% url 'public:services' %}"      class="mobile-nav-link"><i class="bi bi-briefcase-fill"></i><span>Services</span></a></li>
+      <li><a href="{% url 'public:experience' %}"    class="mobile-nav-link"><i class="bi bi-building"></i><span>Experience</span></a></li>
+      <li><a href="{% url 'public:education' %}"     class="mobile-nav-link"><i class="bi bi-mortarboard-fill"></i><span>Education</span></a></li>
       <li><a href="{% url 'public:certifications' %}" class="mobile-nav-link"><i class="bi bi-patch-check-fill"></i><span>Certifications</span></a></li>
-      <li><a href="{% url 'public:achievements' %}" class="mobile-nav-link"><i class="bi bi-trophy-fill"></i><span>Achievements</span></a></li>
-      <li><a href="{% url 'public:blog' %}" class="mobile-nav-link"><i class="bi bi-journal-text"></i><span>Blog</span></a></li>
-      <li><a href="{% url 'public:resume' %}" class="mobile-nav-link"><i class="bi bi-file-earmark-person-fill"></i><span>Resume</span></a></li>
+      <li><a href="{% url 'public:achievements' %}"  class="mobile-nav-link"><i class="bi bi-trophy-fill"></i><span>Achievements</span></a></li>
+      <li><a href="{% url 'public:blog' %}"          class="mobile-nav-link"><i class="bi bi-journal-text"></i><span>Blog</span></a></li>
+      <li><a href="{% url 'public:resume' %}"        class="mobile-nav-link"><i class="bi bi-file-earmark-person-fill"></i><span>Resume</span></a></li>
     </ul>
   </nav>
+
+  <!-- Pinned footer with Contact CTA -->
   <div class="mobile-sidebar-footer">
     <a href="{% url 'public:contact' %}" class="btn-primary-custom w-100 justify-content-center py-2">
       <i class="bi bi-chat-dots-fill me-2"></i> Contact Me
     </a>
   </div>
+
 </aside>
