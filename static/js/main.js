@@ -37,12 +37,60 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // -- Active nav link highlighting --------------------------
+// -- Active nav link highlighting --------------------------
 const currentPath = window.location.pathname;
-document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+document.querySelectorAll('.navbar-nav .nav-link, .mobile-nav-link').forEach(link => {
   if (link.getAttribute('href') === currentPath) {
     link.classList.add('active');
   }
 });
+
+// -- Mobile Sidebar ----------------------------------------
+(function() {
+  const toggleBtn  = document.getElementById('mobileMenuToggle');
+  const sidebar    = document.getElementById('mobileSidebar');
+  const overlay    = document.getElementById('sidebarOverlay');
+  const closeBtn   = document.getElementById('sidebarClose');
+
+  if (!toggleBtn || !sidebar || !overlay) return;
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.classList.add('sidebar-open');
+    closeBtn && closeBtn.focus();
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.classList.remove('sidebar-open');
+    toggleBtn.focus();
+  }
+
+  toggleBtn.addEventListener('click', openSidebar);
+  closeBtn  && closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+  });
+
+  // Close sidebar when a nav link is tapped (SPA-friendly)
+  sidebar.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      setTimeout(closeSidebar, 80);
+    });
+  });
+
+  // Auto-close sidebar on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 992 && sidebar.classList.contains('open')) {
+      closeSidebar();
+    }
+  });
+})();
 
 // -- Contact form loading state ----------------------------
 const contactForm = document.getElementById('contact-form');
