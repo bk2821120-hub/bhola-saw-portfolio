@@ -17,27 +17,47 @@
       <div class="col-lg-5">
         <div class="glass-card h-100">
           <h3 class="fw-bold text-white mb-4">Contact Information</h3>
-          
-          <div class="d-flex align-items-start gap-3 mb-4">
+
+          <!-- Email 1 -->
+          <div class="d-flex align-items-start gap-3 mb-3">
             <div class="social-icon-btn bg-primary text-white flex-shrink-0"><i class="bi bi-envelope-fill"></i></div>
             <div>
-              <span class="text-muted small d-block">Email Address</span>
-              <a href="mailto:{{ profile.email }}" class="text-info fw-semibold">{{ profile.email|default:"contact@example.com" }}</a>
+              <span class="text-muted small d-block">Primary Email</span>
+              <a href="mailto:{{ profile.email }}" class="text-info fw-semibold d-block" style="font-size:0.9rem;">{{ profile.email|default:"bholasaw8347@gmail.com" }}</a>
+              {% if profile.email2 %}
+              <a href="mailto:{{ profile.email2 }}" class="text-info fw-semibold d-block mt-1" style="font-size:0.9rem;">{{ profile.email2 }}</a>
+              {% endif %}
             </div>
           </div>
 
+          <!-- Phone numbers -->
           {% if profile.phone %}
-          <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="d-flex align-items-start gap-3 mb-3">
             <div class="social-icon-btn bg-success text-white flex-shrink-0"><i class="bi bi-telephone-fill"></i></div>
             <div>
-              <span class="text-muted small d-block">Phone Number</span>
-              <span class="text-light fw-semibold">{{ profile.phone }}</span>
+              <span class="text-muted small d-block">Phone Numbers</span>
+              <a href="tel:{{ profile.phone }}" class="text-light fw-semibold d-block" style="font-size:0.9rem;">{{ profile.phone }}</a>
+              {% if profile.phone2 %}
+              <a href="tel:{{ profile.phone2 }}" class="text-light fw-semibold d-block mt-1" style="font-size:0.9rem;">{{ profile.phone2 }}</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- WhatsApp quick links -->
+          {% if profile.phone %}
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <div class="social-icon-btn flex-shrink-0" style="background:#25d366;color:#fff;"><i class="bi bi-whatsapp"></i></div>
+            <div>
+              <span class="text-muted small d-block">WhatsApp</span>
+              <a href="https://wa.me/919905845253" target="_blank" rel="noopener noreferrer" class="text-success fw-semibold d-block" style="font-size:0.9rem;">+91 9905845253</a>
+              <a href="https://wa.me/919279343240" target="_blank" rel="noopener noreferrer" class="text-success fw-semibold d-block mt-1" style="font-size:0.9rem;">+91 9279343240</a>
             </div>
           </div>
           {% endif %}
 
           {% if profile.location %}
-          <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="d-flex align-items-start gap-3 mb-3">
             <div class="social-icon-btn bg-warning text-dark flex-shrink-0"><i class="bi bi-geo-alt-fill"></i></div>
             <div>
               <span class="text-muted small d-block">Location</span>

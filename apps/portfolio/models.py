@@ -1,4 +1,4 @@
-﻿"""
+"""
 Portfolio app models: Profile, WebsiteSetting, SocialLink
 """
 from django.db import models
@@ -21,7 +21,9 @@ class Profile(models.Model):
     current_focus = models.CharField(max_length=300, blank=True)
     photo = models.ImageField(upload_to=profile_upload_path, blank=True, null=True)
     email = models.EmailField(blank=True)
+    email2 = models.EmailField(blank=True, verbose_name='Second Email')
     phone = models.CharField(max_length=30, blank=True)
+    phone2 = models.CharField(max_length=30, blank=True, verbose_name='Second Phone')
     location = models.CharField(max_length=200, blank=True)
     resume_tagline = models.CharField(max_length=300, blank=True)
     years_of_experience = models.PositiveIntegerField(default=0)
