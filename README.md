@@ -134,6 +134,9 @@ Visit:
 
 ## 🌐 URL Routes Reference
 
+> Deployed on Render (https://bhola-saw.onrender.com)
+
+
 ### Public Routes
 | URL | View Description |
 |-----|------------------|
@@ -169,6 +172,41 @@ Visit:
 | `/blog/` | Draft, Edit & Publish Articles |
 | `/portal/documents/` | Upload Resumes & Set Active Version |
 | `/portal/messages/` | Read, Filter & Delete Visitor Inquiries |
+
+---
+
+## 🚀 Render Deployment & Persistent Live Storage Guide
+
+### How Live Storage Works on Render
+Render's web containers have an ephemeral filesystem by default (files reset when rebuilding or restarting).
+To ensure **all your live changes, updates, and uploaded files are saved permanently**:
+
+#### Option 1: Render Persistent Disk (Render Storage — Recommended for SQLite)
+1. In `render.yaml` (or in the Render Dashboard):
+   - A Persistent Disk is attached at `/var/data` (e.g. 1 GB).
+   - Your SQLite database lives at `/var/data/db.sqlite3`.
+   - Your uploaded photos, resumes, and project assets live at `/var/data/media/`.
+2. On initial startup, `render_start.sh` automatically initializes `/var/data/db.sqlite3` and media files, and seeds the initial admin account.
+3. Every update you make in `/portal/` (editing profile, creating projects, changing contact details, adding blogs) **is saved directly to Render Persistent Storage and is never lost!**
+
+#### Option 2: Render Free PostgreSQL Database (100% Free Plan)
+1. In your Render Dashboard, click **New +** ➔ **PostgreSQL**.
+2. Select the **Free** instance type.
+3. Copy the **Internal Database URL** (e.g., `postgresql://user:pass@host/db`).
+4. In your Web Service **Environment Variables**, add:
+   - `DATABASE_URL` = `<your-postgres-url>`
+5. Django will automatically detect `DATABASE_URL` and route all database operations to PostgreSQL. Any update you make is saved permanently in your live database!
+
+### Key Render Settings
+- **Build Command:** `pip install -r requirements.txt && python manage.py collectstatic --noinput`
+- **Start Command:** `bash render_start.sh`
+- **Environment Variables:**
+  - `DEBUG`: `False`
+  - `DATA_DIR`: `/var/data` (when using Render Disk)
+  - `ALLOWED_HOSTS`: `.onrender.com,localhost,127.0.0.1`
+  - `CSRF_TRUSTED_ORIGINS`: `https://*.onrender.com,http://localhost,http://127.0.0.1`
+  - `DJANGO_SUPERUSER_USERNAME`: `kishanraja`
+  - `DJANGO_SUPERUSER_PASSWORD`: `kishanraja12345`
 
 ---
 

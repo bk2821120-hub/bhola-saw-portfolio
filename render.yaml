@@ -2,9 +2,13 @@ services:
   - type: web
     name: bhola-saw-portfolio
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py seed_data"
-    startCommand: "gunicorn config.wsgi:application"
-    plan: free
+    plan: starter # Render Persistent Disks require Starter plan ($7/mo + $0.25 disk). If on Free plan, change to 'free' and remove the disk block below.
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "bash render_start.sh"
+    disk:
+      name: portfolio-storage
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -12,7 +16,22 @@ services:
         value: "False"
       - key: DB_ENGINE
         value: "sqlite"
+      - key: DATA_DIR
+        value: "/var/data"
       - key: ALLOWED_HOSTS
         value: ".onrender.com,localhost,127.0.0.1"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://*.onrender.com,http://localhost,http://127.0.0.1"
       - key: PYTHON_VERSION
         value: "3.10.12"
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: "kishanraja"
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: "kishanraja12345"
+
+# OPTIONAL FREE-TIER ALTERNATIVE (Render Free PostgreSQL):
+# If you prefer 100% free hosting with a permanent live database:
+# 1. In Render dashboard, create a new 'PostgreSQL' database (Free plan).
+# 2. In your Web Service settings, add environment variable:
+#    DATABASE_URL = <your Render Postgres Internal Database URL>
+# Django will automatically detect DATABASE_URL and use PostgreSQL!

@@ -1,3 +1,4 @@
+import os
 import datetime
 from django.utils import timezone
 from django.core.management.base import BaseCommand
@@ -16,7 +17,37 @@ from apps.documents.models import Document
 class Command(BaseCommand):
     help = 'Seeds initial portfolio CMS data with Bhola Kumar profile and structure.'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Force re-seeding even if profile already exists in the database.',
+        )
+
+    def _ensure_superuser(self):
+        admin_user = User.objects.filter(is_superuser=True).first()
+        if not admin_user:
+            username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'kishanraja')
+            email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'kishanraja@example.com')
+            password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'kishanraja12345')
+            admin_user = User.objects.create_superuser(
+                username=username,
+                email=email,
+                password=password
+            )
+            self.stdout.write(self.style.SUCCESS(f"Default admin superuser created: '{username}' (password: kishanraja12345 or from env)"))
+        return admin_user
+
     def handle(self, *args, **options):
+        # Always verify or create superuser for login access
+        admin_user = self._ensure_superuser()
+
+        # Check if database is already seeded to protect live user changes
+        force = options.get('force', False)
+        if Profile.objects.exists() and not force:
+            self.stdout.write(self.style.SUCCESS("Database is already initialized. Skipping seed to preserve user updates."))
+            return
+
         self.stdout.write("Starting database seeding...")
 
         # 1. Profile
@@ -43,11 +74,11 @@ class Command(BaseCommand):
         settings, s_created = WebsiteSetting.objects.get_or_create(
             site_name="Bhola Kumar | Portfolio",
             defaults={
-                'seo_title': "Bhola Kumar â€” Full-Stack Developer & ML Engineer",
+                'seo_title': "Bhola Kumar — Full-Stack Developer & ML Engineer",
                 'seo_description': "Official portfolio website of Bhola Kumar. Explore projects, technical skills, certifications, work experience, and articles.",
                 'primary_color': "#6366f1",
                 'secondary_color': "#8b5cf6",
-                'footer_text': "Â© 2026 Bhola Kumar. All Rights Reserved. Built with Django & Bootstrap 5.",
+                'footer_text': "© 2026 Bhola Kumar. All Rights Reserved. Built with Django & Bootstrap 5.",
             }
         )
         self.stdout.write(f"Website Settings initialized (Created: {s_created})")
@@ -220,7 +251,7 @@ class Command(BaseCommand):
 
         # 9. Achievements
         Achievement.objects.get_or_create(
-            title="1st Runner-Up â€” National Level AI Hackathon",
+            title="1st Runner-Up — National Level AI Hackathon",
             defaults={
                 'organization': "TechFest 2025",
                 'date': datetime.date(2025, 10, 15),

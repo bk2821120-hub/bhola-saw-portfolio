@@ -20,6 +20,20 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 if '*' not in ALLOWED_HOSTS and 'testserver' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS += ['testserver', 'localhost', '127.0.0.1']
 
+# CSRF Trusted Origins for Render and custom domains
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+    'https://*.onrender.com',
+    'http://localhost',
+    'http://127.0.0.1',
+])
+for host in ALLOWED_HOSTS:
+    if host and host not in ('*', 'localhost', '127.0.0.1', 'testserver'):
+        clean_host = host.lstrip('.')
+        origin = f"https://{clean_host}"
+        if origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
+
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -77,17 +91,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database Configuration (SQLite by default for zero-config hosting, switchable to MySQL)
+# Database Configuration (Supports Render PostgreSQL, SQLite with Persistent Storage, and MySQL)
+DATABASE_URL = env('DATABASE_URL', default='')
 DB_ENGINE = env('DB_ENGINE', default='sqlite')
 
-if DB_ENGINE == 'sqlite':
+if DATABASE_URL:
+    # 1. Managed PostgreSQL or MySQL on Render via DATABASE_URL
+    import dj_database_url
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=False if ('localhost' in DATABASE_URL or '127.0.0.1' in DATABASE_URL) else True,
+        )
     }
-else:
+elif DB_ENGINE == 'mysql':
+    # 2. Standalone MySQL with PyMySQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -98,8 +118,24 @@ else:
             'PORT': env('DB_PORT', default='3306'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             },
+        }
+    }
+else:
+    # 3. SQLite with Render Persistent Storage support (/var/data or DATA_DIR)
+    env_data_dir = env('DATA_DIR', default='')
+    if env_data_dir:
+        DATA_DIR = Path(env_data_dir)
+    elif Path('/var/data').is_dir():
+        DATA_DIR = Path('/var/data')
+    else:
+        DATA_DIR = BASE_DIR
+
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DATA_DIR / 'db.sqlite3',
         }
     }
 
@@ -121,11 +157,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Media files
+# Media files (Render Persistent Storage support or local BASE_DIR/media)
+env_data_dir = env('DATA_DIR', default='')
+if env_data_dir:
+    MEDIA_ROOT = Path(env_data_dir) / 'media'
+elif Path('/var/data').is_dir():
+    MEDIA_ROOT = Path('/var/data/media')
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -3,6 +3,13 @@ Config initialization and Python 3.14+ compatibility patches for Django.
 """
 import sys
 
+# PyMySQL setup for MySQL without mysqlclient C library
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 # Python 3.14+ compatibility patch for Django Context.__copy__
 if sys.version_info >= (3, 14):
     from django.template import context as django_context
